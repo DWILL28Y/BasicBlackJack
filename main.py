@@ -6,6 +6,7 @@ cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 user_cards = []
 computer_cards = []
 user_score = 0
+computer_score = 0
 
 def get_user_cards ():
     user_new_card = random.choice(cards)
@@ -15,27 +16,41 @@ def get_computer_cards ():
     computer_new_card = random.choice(cards)
     return computer_new_card
 
-def current_game(current_cards, current_score, computer_cards):
+def current_game(current_cards, current_score, current_computer_cards):
     print(f"Your cards are: {current_cards}, current hand: {current_score}")
-    print(f"Computers first card: {computer_cards}")
+    print(f"Computers first card: {current_computer_cards}")
 
+def game_over (current_cards, current_score, current_computer_cards):
+    print(f"Your final cards are: {current_cards}, final hand: {current_score}")
+    print(f"Computers final cards: {current_computer_cards}")
+
+user_continues = True
+computer_continues = True
 blackjack = True
 while blackjack:
-    user_card1 = random.choice(cards)
-    user_card2 = random.choice(cards)
-    computer_card1 = random.choice(cards)
-    user_score += user_card1 + user_card2
-    computer_cards = [user_card1]
-    user_cards = [user_card1, user_card2]
-    current_game(current_cards=user_cards, current_score=user_score, computer_cards=computer_cards)
-    get_new_card = input("Press 'y' to get another card or 'n' to pass: ")
+    user_cards.append(get_user_cards())
+    user_cards.append(get_user_cards())
+    computer_cards.append(get_computer_cards())
+    user_score += sum(user_cards)
 
-    if get_new_card == 'y':
-        user_card3 = get_user_cards()
-        user_cards.append(user_card3)
-        current_game(current_cards=user_cards, current_score=user_score, computer_cards=computer_cards)
+    current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
+    while user_continues:
+        get_new_card = input("Press 'y' to get another card or 'n' to pass: ")
+        if get_new_card == 'y':
+            user_cards.append(get_user_cards())
+            user_score += sum(user_cards)
+            current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
+        else:
+            user_continues = False
 
     else:
-        computer_card2 = get_computer_cards()
-        computer_cards.append(computer_card2)
-        
+        while computer_continues:
+            computer_cards.append(get_computer_cards())
+            computer_score += sum(computer_cards)
+            if computer_score <= 16:
+                computer_continues = True
+            else:
+                game_over(current_cards = user_cards, current_score=user_score, current_computer_cards=computer_cards)
+
+
+
