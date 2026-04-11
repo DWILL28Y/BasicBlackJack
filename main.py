@@ -23,10 +23,10 @@ def check_winner(final_user_score, final_computer_score):
         return print("The game is a draw!")
     elif final_user_score > final_computer_score:
         return print("You win!")
-    elif final_computer_score > final_user_score:
-        return print("You Lose!")
     elif final_computer_score > 21:
         return print("Dealer bust, You win!")
+    elif final_computer_score > final_user_score:
+        return print("You Lose!")
 
 blackjack = True
 while blackjack:
@@ -51,6 +51,12 @@ while blackjack:
             new_card = user_cards.append(get_cards())
             user_score = sum(user_cards)
             current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
+
+            #if the user has an Ace(11), and they are over 21, replace with #1
+            while user_score > 21 and 11 in user_cards:
+                user_cards[user_cards.index(11)] = 1
+                user_score = sum(user_cards)
+
             if user_score > 21:
                 print("You bust, dealer wins!")
                 user_continues = False
@@ -65,6 +71,11 @@ while blackjack:
     while computer_continues:
         new_computer_card = computer_cards.append(get_cards())
         computer_score = sum(computer_cards)
+        # if the computer has an Ace(11), and they are over 21, replace with #1
+        while computer_score > 21 and 11 in computer_cards:
+            computer_cards[computer_cards.index(11)] = 1
+            computer_score = sum(computer_cards)
+
         if computer_score <= 16:
             computer_continues = True
         else:
