@@ -45,17 +45,18 @@ while blackjack:
     current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
 
     #if user wants another card, this starts the user loop to keep getting cards
-    get_new_card = input("Press 'y' to get another card or 'n' to pass: ")
+    get_new_card = input("Press 'y' to get another card or 'n' to pass: ").lower()
     if get_new_card == 'y':
         while user_continues:
             new_card = user_cards.append(get_cards())
             user_score = sum(user_cards)
-            current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
 
             #if the user has an Ace(11), and they are over 21, replace with #1
             while user_score > 21 and 11 in user_cards:
                 user_cards[user_cards.index(11)] = 1
                 user_score = sum(user_cards)
+            current_game(current_cards=user_cards, current_score=user_score, current_computer_cards=computer_cards)
+
 
             if user_score > 21:
                 print("You bust, dealer wins!")
@@ -63,7 +64,7 @@ while blackjack:
                 computer_continues = False
                 continue
 
-            get_new_card = input("Press 'y' to get another card or 'n' to pass: ")
+            get_new_card = input("Press 'y' to get another card or 'n' to pass: ").lower()
             if get_new_card == 'n':
                 user_continues = False
 
@@ -84,7 +85,7 @@ while blackjack:
             check_winner(final_user_score = user_score, final_computer_score = computer_score)
 
     #user decides if they want to play another game of not
-    continue_game = input("Press 'y' to play a game of Blackjack or 'n' to quit: ")
+    continue_game = input("Press 'y' to play a game of Blackjack or 'n' to quit: ").lower()
     if continue_game == 'n':
         blackjack = False
     else:
